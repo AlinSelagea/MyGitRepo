@@ -1,0 +1,36 @@
+{
+"AWSTemplateFormatVersion" : "2010-09-09",
+
+"Description" : "Deploy in AWS Cloud pentru o aplicatie web de test cu ajutorul AWS CloudFormation",
+
+"Parameters" : {
+
+    "InstanceType" : {
+			"Description" : "MyWebServer EC2 instance type",
+			"Type" : "String",
+			"Default" : "t2.micro",
+			"AllowedValues" : [ "t1.micro", "t2.micro"],
+			"ConstraintDescription" : " instanta creata trebuie sa aibe unul din tipurile mentionate mai sus"
+    }
+},
+"Resources" : {
+  "MyEC2Instance" : {
+    "Type" : "AWS::EC2::Instance",
+    "Properties" : {
+      "ImageId" : "ami-26d3c04e",
+	  "InstanceType" : { "Ref" : "InstanceType" },
+	  "SecurityGroups" : [ {"Ref" : "MyWebServerSecurityGroup"} ],
+    }
+  },
+  "MyWebServerSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "Enable HTTP access via port 80",
+        "SecurityGroupIngress" : [
+          {"IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : "0.0.0.0/0"}
+        ]
+      }      
+    } 
+}
+}
+
